@@ -37,7 +37,7 @@ struct PhotoUploadView: View {
             selection: $selectedItem,
             matching: .images,
             photoLibrary: .shared()) {
-                Button("Select a Photo").buttonStyle(.borderedProminent)
+                Text("Select a photo")
             }
             .onChange(of: selectedItem) { newItem in
                 Task {
@@ -57,7 +57,7 @@ struct PhotoUploadView: View {
                 Spacer()
                 Button("Upload") {
                     self.upload(selectedImageData)
-                }.buttonStyle(.borderedProminent)
+                }
             }.padding()
         }
     }
