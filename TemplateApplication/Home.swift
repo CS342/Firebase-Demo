@@ -25,23 +25,24 @@ struct HomeView: View {
     
     
     var body: some View {
-        TabView(selection: $selectedTab) {
-            ScheduleView()
-                .tag(Tabs.schedule)
-                .tabItem {
-                    Label("SCHEDULE_TAB_TITLE", systemImage: "list.clipboard")
-                }
-            Contacts()
-                .tag(Tabs.contact)
-                .tabItem {
-                    Label("CONTACTS_TAB_TITLE", systemImage: "person.fill")
-                }
-            MockUploadList()
-                .tag(Tabs.mockUpload)
-                .tabItem {
-                    Label("MOCK_UPLOAD_TAB_TITLE", systemImage: "server.rack")
-                }
-        }
+        PhotoUploadView()
+//        TabView(selection: $selectedTab) {
+//            ScheduleView()
+//                .tag(Tabs.schedule)
+//                .tabItem {
+//                    Label("SCHEDULE_TAB_TITLE", systemImage: "list.clipboard")
+//                }
+//            Contacts()
+//                .tag(Tabs.contact)
+//                .tabItem {
+//                    Label("CONTACTS_TAB_TITLE", systemImage: "person.fill")
+//                }
+//            MockUploadList()
+//                .tag(Tabs.mockUpload)
+//                .tabItem {
+//                    Label("MOCK_UPLOAD_TAB_TITLE", systemImage: "server.rack")
+//                }
+//        }
     }
 }
 
