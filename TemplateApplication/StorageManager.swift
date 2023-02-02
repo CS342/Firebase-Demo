@@ -7,6 +7,7 @@
 
 import FirebaseCore
 import FirebaseStorage
+import FirebaseFirestore
 
 class StorageManager {
     static let shared = StorageManager()
@@ -25,6 +26,20 @@ class StorageManager {
 
             if let metadata = metadata {
                 print("Metadata: ", metadata)
+            }
+        }
+    }
+
+    func fetchAllResults() {
+        let db = Firestore.firestore()
+        db.collection("image-result").getDocuments() { (querySnapshot, error) in
+            if let error = error {
+                print("Error getting documents: \(error)")
+            } else {
+                guard let querySnapshot else { return }
+                for document in querySnapshot.documents {
+                    print("\(document.documentID): \(document.data())")
+                }
             }
         }
     }

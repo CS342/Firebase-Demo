@@ -38,7 +38,10 @@ struct PhotoUploadView: View {
                 .sheet(isPresented: self.$showImageSheet) {
                     PhotoPreview(selectedImageData: $selectedImageData)
                 }
-        }.navigationTitle("Analyze Photo")
+            Button("Fetch results") {
+                StorageManager.shared.fetchAllResults()
+            }
+        }
     }
 }
 
