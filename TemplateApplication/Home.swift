@@ -18,6 +18,7 @@ struct HomeView: View {
         case schedule
         case contact
         case mockUpload
+        case photoUpload
     }
     
     
@@ -25,24 +26,28 @@ struct HomeView: View {
     
     
     var body: some View {
-        PhotoUploadView()
-//        TabView(selection: $selectedTab) {
-//            ScheduleView()
-//                .tag(Tabs.schedule)
-//                .tabItem {
-//                    Label("SCHEDULE_TAB_TITLE", systemImage: "list.clipboard")
-//                }
-//            Contacts()
-//                .tag(Tabs.contact)
-//                .tabItem {
-//                    Label("CONTACTS_TAB_TITLE", systemImage: "person.fill")
-//                }
-//            MockUploadList()
-//                .tag(Tabs.mockUpload)
-//                .tabItem {
-//                    Label("MOCK_UPLOAD_TAB_TITLE", systemImage: "server.rack")
-//                }
-//        }
+        TabView(selection: $selectedTab) {
+            PhotoUploadView()
+                .tag(Tabs.photoUpload)
+                .tabItem {
+                    Label("Analyze Photo", systemImage: "photo.fill")
+                }
+            ScheduleView()
+                .tag(Tabs.schedule)
+                .tabItem {
+                    Label("SCHEDULE_TAB_TITLE", systemImage: "list.clipboard")
+                }
+            Contacts()
+                .tag(Tabs.contact)
+                .tabItem {
+                    Label("CONTACTS_TAB_TITLE", systemImage: "person.fill")
+                }
+            MockUploadList()
+                .tag(Tabs.mockUpload)
+                .tabItem {
+                    Label("MOCK_UPLOAD_TAB_TITLE", systemImage: "server.rack")
+                }
+        }
     }
 }
 

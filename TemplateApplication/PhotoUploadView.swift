@@ -13,51 +13,55 @@ import SwiftUI
 struct PhotoUploadView: View {
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
-
-    func upload(_ data: Data) {
-        let id = UUID().uuidString
-        let storage = Storage.storage()
-        let storageRef = storage.reference().child("\(id).jpg")
-        let metadata = StorageMetadata()
-        metadata.contentType = "image/jpg"
-
-        storageRef.putData(data, metadata: metadata) { (metadata, error) in
-            if let error = error {
-                print("Error while uploading file: ", error)
-            }
-
-            if let metadata = metadata {
-                print("Metadata: ", metadata)
-            }
-        }
-    }
+    @State private var showImageSheet = false
 
     var body: some View {
-        PhotosPicker(
-            selection: $selectedItem,
-            matching: .images,
-            photoLibrary: .shared()) {
-                Text("Select a photo")
-            }
-            .onChange(of: selectedItem) { newItem in
-                Task {
-                    if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                        selectedImageData = data
+        VStack {
+            PhotosPicker(
+                selection: $selectedItem,
+                matching: .images,
+                photoLibrary: .shared()) {
+                    Text("Select a photo to analyze!")
+                        .padding()
+                        .background(.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(5)
+                }
+                .onChange(of: selectedItem) { newItem in
+                    Task {
+                        if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                            selectedImageData = data
+                            showImageSheet.toggle()
+                        }
                     }
                 }
-            }
+                .sheet(isPresented: self.$showImageSheet) {
+                    PhotoPreview(selectedImageData: $selectedImageData)
+                }
+        }.navigationTitle("Analyze Photo")
+    }
+}
 
-        if let selectedImageData,
+struct PhotoPreview: View {
+    @Environment(\.dismiss) var dismiss
+    @Binding var selectedImageData: Data?
+
+    var body: some View {
+        if let selectedImageData = self.selectedImageData,
            let uiImage = UIImage(data: selectedImageData) {
             VStack {
+                Text("Photo Preview")
+                    .font(.largeTitle)
+                    .padding()
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 250, height: 250)
-                Spacer()
-                Button("Upload") {
-                    self.upload(selectedImageData)
-                }
+                    .padding()
+                Button("Upload + Analyze") {
+                    StorageManager.shared.uploadImage(selectedImageData)
+                    dismiss()
+                }.buttonStyle(.borderedProminent)
             }.padding()
         }
     }
